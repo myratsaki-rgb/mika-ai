@@ -1,4 +1,4 @@
-name: Compilar APK da Mika
+name: Compilar APK Mika Pixel HD v0.6
 
 on:
   workflow_dispatch:
@@ -23,14 +23,17 @@ jobs:
           gradle-version: '8.11.1'
       - name: Instalar SDK Android
         run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
-      - name: Verificar arquivo fonte
-        run: test -f MIKA_Android_v0.5_SplashAnimada_FONTE.zip
+      - name: Verificar ZIP
+        run: test -f MIKA_Android_v0.6_PixelHD_Corrigida_FONTE.zip
       - name: Extrair projeto
-        run: unzip -q MIKA_Android_v0.5_SplashAnimada_FONTE.zip
+        run: unzip -q MIKA_Android_v0.6_PixelHD_Corrigida_FONTE.zip
+      - name: Testar recursos da tela inicial
+        run: python3 MIKA_Android_v0.6_PixelHD_Corrigida/scripts/verificar_assets.py
       - name: Compilar APK
-        run: cd MIKA_Android_v0.5_SplashAnimada && gradle :app:assembleDebug --no-daemon
+        working-directory: MIKA_Android_v0.6_PixelHD_Corrigida
+        run: gradle :app:assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
-          name: Mika-PixelHD-v05-APK
-          path: MIKA_Android_v0.5_SplashAnimada/app/build/outputs/apk/debug/app-debug.apk
+          name: Mika-PixelHD-v06-APK
+          path: MIKA_Android_v0.6_PixelHD_Corrigida/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
